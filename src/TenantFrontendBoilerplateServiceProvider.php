@@ -34,13 +34,33 @@ class TenantFrontendBoilerplateServiceProvider extends ServiceProvider
                 __DIR__ . '/../resources/views' => resource_path('views/'),
             ], 'views');
 
-            $this->appendCustomRoutesToWeb();
+
+            $providerToCheck = 'Codeintel\TenantFrontendBoilerplate\TenantFrontendBoilerplateServiceProvider';
+            if ($this->checkVendorPublishCommand($providerToCheck)) {
+                $this->appendCustomRoutesToWeb();
+            } else {
+                echo "The vendor:publish command does not contain the provider: $providerToCheck\n";
+            }
 
 
         }
     }
 
-    // In your package's service provider
+    function checkVendorPublishCommand($provider)
+    {
+        if (isset($_SERVER['argv']) && in_array('vendor:publish', $_SERVER['argv'])) {
+            $index = array_search('vendor:publish', $_SERVER['argv']);
+            if (isset($_SERVER['argv'][$index + 1]) && $_SERVER['argv'][$index + 1] === '--provider=' . $provider) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+// Usage
+
+
+// In your package's service provider
     public function appendCustomRoutesToWeb()
     {
         $customRoutes = file_get_contents(__DIR__ . '/../routes/routes.php');
