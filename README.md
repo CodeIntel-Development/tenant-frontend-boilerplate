@@ -2,7 +2,7 @@
 
 
 ```
-composer require codeintel/tenant-frontend-boilerplate```
+composer require codeintel/tenant-frontend-boilerplate
 ```
 
 ```
